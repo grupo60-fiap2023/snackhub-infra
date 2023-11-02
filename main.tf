@@ -4,24 +4,12 @@ terraform {
       source = "hashicorp/aws"
       version = "5.23.1"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.5.1"
-    }
   }
   required_version = ">= 1.1.0"
 }
 
-data "aws_ssm_parameter" "amzn2_linux" {
-  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
-}
-
 provider "aws" {
-  access_key = "ACCESS_KEY"
-  secret_key = "SECRET_KEY"
+  access_key = "AKIAZQ4WYSBP2Z3IE3P5"
+  secret_key = "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"
   region     = "us-east-1"
-}
-
-locals {
-  cluster_name = "prod"
 }
