@@ -17,5 +17,6 @@ resource "aws_db_instance" "default" {
 variable "db_password"{
   type = string
   description = "Database Password"
+  default = "12345678"
   sensitive = true
 }

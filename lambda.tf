@@ -1,10 +1,10 @@
 resource "aws_lambda_function" "java_lambda_function" {
   runtime          = "java17"
-  s3_bucket = "fiap-burger"
+  s3_bucket = "snackhub_s3_bucket"
   s3_key = "lambda-client-auth/lambda-client-authentication.zip"
   function_name = "java_lambda_function"
 
-  handler          = "com.fiap.burger.handler.LambdaHandler::handleRequest"
+  handler          = "com.fiap.snackhub.handler.LambdaHandler::handleRequest"
   timeout = 60
   memory_size = 256
   role             = "${aws_iam_role.iam_role_for_lambda.arn}"

@@ -4,7 +4,7 @@ resource "aws_secretsmanager_secret" "db-snackhub" {
 
 resource "aws_secretsmanager_secret_version" "snackhub" {
   depends_on = [aws_db_instance.default]
-  secret_id     = aws_secretsmanager_secret.snackhub.id
+  secret_id     = aws_secretsmanager_secret.db-snackhub.id
   secret_string = <<EOF
 {
   "username": "${aws_db_instance.default.username}",

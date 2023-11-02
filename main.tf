@@ -19,7 +19,7 @@ data "aws_ssm_parameter" "amzn2_linux" {
 provider "aws" {
   access_key = "ACCESS_KEY"
   secret_key = "SECRET_KEY"
-  region     = "sa-east-1"
+  region     = "us-east-1"
 }
 
 locals {
