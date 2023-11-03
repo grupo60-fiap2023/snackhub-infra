@@ -4,12 +4,11 @@ resource "aws_ecs_cluster" "ecs-cluster-terraform" {
 
 resource "aws_ecs_task_definition" "tarefa-imagem" {
   family = "family-terraform"
+  requires_compatibilities = [ "FARGATE" ]
   network_mode = "awsvpc"
   cpu = 1024
-  runtime_platform {
-    operating_system_family = "LINUX"
-    cpu_architecture = "X86_64"
-  }
+  memory = 2048
+  execution_role_arn = "${data.aws_iam_role.ecs_task_execution_role.arn}"
   container_definitions = jsonencode([
     {
         name = "service"
@@ -38,8 +37,12 @@ resource "aws_ecs_task_definition" "tarefa-imagem" {
             { name : "MYSQL_SCHEMA", value : "snackhub" },
             { name : "MYSQL_URL", value : aws_db_instance.snackhub-db.address }
         ]
-    }
+    }  
   ])
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture = "X86_64"
+  }
 }
 
 resource "aws_ecs_service" "app-svc" {
@@ -48,7 +51,11 @@ resource "aws_ecs_service" "app-svc" {
   task_definition = aws_ecs_task_definition.tarefa-imagem.arn
   desired_count = 1
   network_configuration {
-    subnets = [aws_subnet.subnet.id]
+    subnets = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
     security_groups = [aws_security_group.sec-group.id]
   }
+}
+
+data "aws_iam_role" "ecs_task_execution_role" {
+  name = "ecsTaskExecutionRole"
 }
