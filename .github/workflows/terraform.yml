@@ -19,9 +19,9 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Configurando access key para acesso a AWS
-        run: $env:TF_VAR_AWS_ACCESS_KEY_ID=${{ secrets.TF_VAR_AWS_ACCESS_KEY }}
+        run: $env:TF_VAR_aws_access_key=${{ secrets.TF_VAR_AWS_ACCESS_KEY }}
       - name: Configurando secret key para acesso a AWS
-        run: $env:TF_VAR_AWS_SECRET_ACCESS_KEY=${{ secrets.TF_VAR_AWS_SECRET_KEY }}
+        run: $env:TF_VAR_aws_secret_key=${{ secrets.TF_VAR_AWS_SECRET_KEY }}
       # Terraform 
       - name: Inicializando Terraform
         run: program/terraform.exe init        
