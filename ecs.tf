@@ -50,9 +50,11 @@ resource "aws_ecs_service" "app-svc" {
   cluster = aws_ecs_cluster.ecs-cluster-terraform.id
   task_definition = aws_ecs_task_definition.tarefa-imagem.arn
   desired_count = 1
+  launch_type = "FARGATE"
   network_configuration {
     subnets = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
     security_groups = [aws_security_group.sec-group.id]
+    assign_public_ip = true
   }
 }
 
