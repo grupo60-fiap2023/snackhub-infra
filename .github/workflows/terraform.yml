@@ -17,15 +17,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Configurando access key para acesso a AWS
-        run: $env:TF_VAR_aws_access_key=${{ secrets.TF_VAR_AWS_ACCESS_KEY }}
-      - name: Configurando secret key para acesso a AWS
-        run: $env:TF_VAR_aws_secret_key=${{ secrets.TF_VAR_AWS_SECRET_KEY }}
       # Terraform 
       - name: Inicializando Terraform
         run: program/terraform.exe init        
       - name: Criando plano
-        run: program/terraform.exe plan --out infra.tfplan
+        run: program/terraform.exe plan --out infra.tfplan -var="aws_access_key=${{ secrets.TF_VAR_AWS_ACCESS_KEY }}" -var="aws_secret_key=${{ secrets.TF_VAR_AWS_SECRET_KEY }}"
       - name: Executando plano
-        run: program/terraform.exe apply infra.tfplan
+        run: program/terraform.exe apply infra.tfplan 
