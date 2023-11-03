@@ -42,10 +42,12 @@ resource "aws_ecs_task_definition" "tarefa-imagem" {
   ])
 }
 
-
-
-# resource "aws_ecs_service" "app-svc" {
-#   name = "app-svc"
-#   cluster = aws_ecs_cluster.ecs-cluster-terraform.id
-#   task_definition = aws_ecs_task_definition.tarefa-imagem
-# }
+resource "aws_ecs_service" "app-svc" {
+  name = "app-svc"
+  cluster = aws_ecs_cluster.ecs-cluster-terraform.id
+  task_definition = aws_ecs_task_definition.tarefa-imagem.arn
+  desired_count = 1
+  network_configuration {
+    subnets = [aws_subnet.subnet.id]
+  }
+}
