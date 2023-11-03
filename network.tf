@@ -6,10 +6,18 @@ resource "aws_vpc" "vpc-tf" {
  }
 }
 
-resource "aws_subnet" "subnet" {
+resource "aws_subnet" "subnet_a" {
  vpc_id                  = aws_vpc.vpc-tf.id
- cidr_block              = cidrsubnet(aws_vpc.vpc-tf.cidr_block, 8, 1)
+ cidr_block              = cidrsubnet(aws_vpc.vpc-tf.cidr_block, 4, 1)
  map_public_ip_on_launch = true
+ availability_zone = "${var.region}a"
+}
+
+resource "aws_subnet" "subnet_b" {
+ vpc_id                  = aws_vpc.vpc-tf.id
+ cidr_block              = cidrsubnet(aws_vpc.vpc-tf.cidr_block, 7, 1)
+ map_public_ip_on_launch = true
+ availability_zone = "${var.region}b"
 }
 
 resource "aws_internet_gateway" "internet_gateway" {
@@ -27,8 +35,13 @@ resource "aws_route_table" "route_table" {
  }
 }
 
-resource "aws_route_table_association" "subnet_route" {
- subnet_id      = aws_subnet.subnet.id
+resource "aws_route_table_association" "subnet_route_a" {
+ subnet_id      = aws_subnet.subnet_a.id
+ route_table_id = aws_route_table.route_table.id
+}
+
+resource "aws_route_table_association" "subnet_route_b" {
+ subnet_id      = aws_subnet.subnet_b.id
  route_table_id = aws_route_table.route_table.id
 }
 
@@ -59,4 +72,10 @@ resource "aws_security_group" "sec-group" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+
+resource "aws_db_subnet_group" "db-subnet-group" {
+  name       = "db-subnet-group"
+  subnet_ids = [aws_subnet.subnet_a.id,aws_subnet.subnet_b.id]
 }

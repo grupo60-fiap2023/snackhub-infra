@@ -49,5 +49,6 @@ resource "aws_ecs_service" "app-svc" {
   desired_count = 1
   network_configuration {
     subnets = [aws_subnet.subnet.id]
+    security_groups = [aws_security_group.sec-group.id]
   }
 }
